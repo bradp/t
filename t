@@ -31,22 +31,24 @@ list() {
 
     echo "----------"
 
-    echo "$(sed -n '1!G;h;$p' ~/.todo)" > ~/.todo-tmp
-    ((i=0))
-    while read -r line
-    do
+    if [[ $done = "true" ]]; then
+        echo "$(sed -n '1!G;h;$p' ~/.todo)" > ~/.todo-tmp
+        ((i=0))
+        while read -r line
+        do
 
-        if [[ $line = "----------" ]]; then
-            break
-        fi
+            if [[ $line = "----------" ]]; then
+                break
+            fi
 
-        if [ $i -lt 5 ]; then
-            echo "✅  $line"
-        fi
-        ((i++))
-    done < ~/.todo-tmp
+            if [ $i -lt 5 ]; then
+                echo "✅  $line"
+            fi
+            ((i++))
+        done < ~/.todo-tmp
 
-    rm ~/.todo-tmp
+        rm ~/.todo-tmp
+    fi
 
 }
 
@@ -58,7 +60,12 @@ add() {
 check() {
     item="$(sed "$1q;d" ~/.todo)"
     echo "$(sed "$1d" ~/.todo)" > ~/.todo
-    echo "$item" >> ~/.todo
+    if grep -q '\----------' ~/.todo; then
+        echo "$item" >> ~/.todo
+    else
+        echo "----------" >> ~/.todo
+        echo "$item" >> ~/.todo
+    fi
     info "Completed" "$item"
 }
 
@@ -88,7 +95,7 @@ check_args() {
                 shift
                 ;;
             *)
-                fail "Unknown option $1"
+                info "Error" "Unknown option $1"
                 shift
                 ;;
         esac
@@ -98,6 +105,9 @@ check_args() {
 }
 
 main() {
+
+    touch ~/.todo
+
     if [ -z "$1" ]; then
         list
     fi
