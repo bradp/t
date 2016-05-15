@@ -4,11 +4,14 @@
 Add this ish to your `$PATH` somewhere and just run it.
 
 ```
-t - lists open todos
+# To list open todos:
+t
 
+# To create a new todo:
 t add "Adding a new todo"
 t a "Shortcut for adding a new todo"
 
+# To mark a todo as completed:
 t complete <todo number>
 t x <todo number>
 ```
