@@ -19,7 +19,7 @@ t x <todo number>
 
 
 
-`t` saves everything in `~/.todo` if you want to manually edit it. It looks like this: 
+`t` saves everything in `~/.todo` if you want to manually edit it. It looks like the example below. Completed items are below the dividing line. 
   ```
   Buy Gob the Aztec Tomb
   Polish the Sword of Destiny
